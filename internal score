@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Internal Score Calculator</title>
+</head>
+<body>
+    <form id="scoreForm">
+        <label for="sessional1">Sessional 1</label>
+        <input type="text" id="sessional1"><br>
+
+        <label for="sessional2">Sessional 2</label>
+        <input type="text" id="sessional2"><br>
+
+        <label for="assignment1">Assignment 1</label>
+        <input type="text" id="assignment1"><br>
+
+        <label for="assignment2">Assignment 2</label>
+        <input type="text" id="assignment2"><br>
+
+        <label for="quiz1">Quiz 1</label>
+        <input type="text" id="quiz1"><br>
+
+        <label for="quiz2">Quiz 2</label>
+        <input type="text" id="quiz2"><br>
+
+        <label for="attendance">Attendance</label>
+        <select id="attendance">
+            <option value=">90">Greater than 90</option>
+            <option value="85-90">85 to 90</option>
+            <option value="80-85">80 to 85</option>
+            <option value="75-80">75 to 80</option>
+            <option value="<75">Less than 75</option>
+        </select><br><br>
+
+        <button type="button" onclick="calculateScore()">Calculate</button>
+    </form>
+
+    <h2 id="result"></h2>
+
+    <script>
+        function calculateScore() {
+            let sessional1 = parseFloat(document.getElementById("sessional1").value) || 0;
+            let sessional2 = parseFloat(document.getElementById("sessional2").value) || 0;
+            let assignment1 = parseFloat(document.getElementById("assignment1").value) || 0;
+            let assignment2 = parseFloat(document.getElementById("assignment2").value) || 0;
+            let quiz1 = parseFloat(document.getElementById("quiz1").value) || 0;
+            let quiz2 = parseFloat(document.getElementById("quiz2").value) || 0;
+            let attendance = document.getElementById("attendance").value;
+
+            // Sessional
+            let res3 = (Math.max(sessional1, sessional2) * 0.8) + (Math.min(sessional1, sessional2) * 0.2);
+
+            // Assignment (Total 12 marks scaled to 3.5)
+            let assign_res = (Math.max(assignment1, assignment2) * 0.8) + (Math.min(assignment1, assignment2) * 0.2);
+            let res6 = (assign_res / 12) * 3.5;
+
+            // Quiz (Total 12 marks scaled to 3.5)
+            let quiz_res = (Math.max(quiz1, quiz2) * 0.8) + (Math.min(quiz1, quiz2) * 0.2);
+            let res9 = (quiz_res / 12) * 3.5;
+
+            // Attendance
+            let res10 = 0;
+            switch (attendance) {
+                case ">90": res10 = 5; break;
+                case "85-90": res10 = 4; break;
+                case "80-85": res10 = 3; break;
+                case "75-80": res10 = 2; break;
+                default: res10 = 0;
+            }
+
+            let total = res3 + res6 + res9 + res10;
+            document.getElementById("result").innerText = "Total Internal Score: " + Math.ceil(total);
+        }
+    </script>
+</body>
+</html>
